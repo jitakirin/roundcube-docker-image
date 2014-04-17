@@ -26,7 +26,7 @@ RUN { echo "roundcube-core  roundcube/dbconfig-install      boolean true"; \
     echo "roundcube-core  roundcube/database-type select  sqlite3"; \
     } |debconf-set-selections
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install \
-    roundcube roundcube-sqlite3
+    roundcube roundcube-sqlite3 curl
 # possible bug: roundcube/language not applied in certain conditions?
 # see also: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=674157
 RUN sed -i -re "/^\\\$rcmail_config\['language'\]/s/ar_SA/en_GB/" \
@@ -39,6 +39,7 @@ RUN ln -s /etc/php5/conf.d/mcrypt.ini /etc/php5/mods-available/mcrypt.ini &&\
     php5enmod mcrypt
 RUN sed -i -re '/^\s*DocumentRoot/s, /.*, /var/lib/roundcube,' \
     /etc/apache2/sites-available/default-ssl.conf
+ADD docker-rc-init.sh /usr/local/sbin/
 EXPOSE 443
-ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+CMD ["/usr/local/sbin/docker-rc-init.sh"]
 # DB in /var/lib/dbconfig-common/sqlite3/roundcube, mount as volume to persist
