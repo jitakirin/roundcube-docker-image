@@ -15,8 +15,13 @@ certificate.
 Using the image as-is is possible (it should be able to connect to any IMAP
 server specified on the login screen), e.g.:
 
-    docker run -P FOO/roundcube:u1310
+    docker run -P jitakizushi/roundcube:u1310
 
-You'll most likely want to create your own derived image and at least configure
-SMTP so you are also able to send emails.  You may also want to modify
-`/etc/roundcube/main.inc.php` and e.g. pre-configure your IMAP server URL.
+You can also specify a roundcube config file (`main.inc.php`) to use by
+specifying a URL to download it from:
+
+    docker run -P -e ROUNDCUBE_CONFIG_URL=http://foo/main.inc.php \
+        jitakizushi/roundcube:u1310
+
+You'll need to do that to be able to send emails (you need to configure SMTP
+server in `main.inc.php`).
