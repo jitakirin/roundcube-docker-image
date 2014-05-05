@@ -17,14 +17,14 @@
 FROM ubuntu:14.04
 MAINTAINER jitakizushi jitakizushi@gmx.com
 
-RUN apt-get update
+RUN apt-get -qq update
 # Configure database for roundcube with dbconfig-common,
 # Default language,
 # Database type to be used by roundcube
 RUN { echo "roundcube-core  roundcube/dbconfig-install      boolean true"; \
     echo "roundcube-core  roundcube/database-type select  sqlite3"; \
     } |debconf-set-selections
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install \
+RUN DEBIAN_FRONTEND=noninteractive apt-get -qy install \
     roundcube roundcube-sqlite3 curl
 
 RUN sed -i -re '/^\s*DocumentRoot/s, /.*, /var/lib/roundcube,' \
