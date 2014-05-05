@@ -18,10 +18,10 @@ server specified on the login screen), e.g.:
     docker run -P jitakizushi/roundcube
 
 You can also specify a roundcube config file (`main.inc.php`) to use by
-specifying a URL to download it from:
+specifying a URL to download it from (you'll need to do that to be able to send
+emails (you need to configure SMTP server in `main.inc.php`)); you should also
+specify your timezone in TZ variable to ensure the dates are correctly
+displayed:
 
     docker run -P -e ROUNDCUBE_CONFIG_URL=http://foo/main.inc.php \
-        jitakizushi/roundcube
-
-You'll need to do that to be able to send emails (you need to configure SMTP
-server in `main.inc.php`).
+        -e TZ=Europe/London jitakizushi/roundcube

@@ -12,6 +12,10 @@ function configure() {
     if [[ -n $ROUNDCUBE_CONFIG_URL ]]; then
 	curl -o /etc/roundcube/main.inc.php $ROUNDCUBE_CONFIG_URL
     fi
+    if [[ -n $TZ ]]; then
+	echo "date.timezone = $TZ" > /etc/php5/mods-available/timezone.ini
+	php5enmod timezone
+    fi
 }
 
 function serve() {
