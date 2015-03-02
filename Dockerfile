@@ -27,13 +27,15 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -qy install \
     roundcube roundcube-sqlite3 curl php5-ldap
 
 RUN sed -i -re '/^\s*DocumentRoot/s, /.*, /var/lib/roundcube,' \
+    /etc/apache2/sites-available/000-default.conf \
     /etc/apache2/sites-available/default-ssl.conf
 
+RUN a2ensite 000-default
 RUN a2ensite default-ssl
 RUN a2enmod ssl
 RUN php5enmod mcrypt
 
 ADD docker-rc-init.sh /usr/local/sbin/
-EXPOSE 443
+EXPOSE 80 443
 CMD ["/usr/local/sbin/docker-rc-init.sh"]
 # DB in /var/lib/dbconfig-common/sqlite3/roundcube, mount as volume to persist
